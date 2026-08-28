@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+:root {
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/public/font/Pretendard-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/public/font/Pretendard-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/public/font/Pretendard-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/public/font/Pretendard-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+body {
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  word-break: keep-all;
+}
+
+input,
+textarea {
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE와 Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
+}
+
+@thema {
+  --breakpoint-lg: 960px;
+}
+
+@media (max-width: 767px) {
+  .mobile-bg-pos {
+    top: calc(100vh - 80vw) !important;
+  }
+}
+
+.notice-content p { margin-bottom: 0.75em; }
+.notice-content ul, .notice-content ol { padding-left: 1.5em; margin-bottom: 0.75em; }
+.notice-content li { margin-bottom: 0.25em; }
+.notice-content strong { font-weight: 600; }

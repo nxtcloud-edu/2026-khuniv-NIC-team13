@@ -1,0 +1,15 @@
+{
+  "short_name": "Pertineo",
+  "name": "Pertineo 자기소개서 역량 분석",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#09469f",
+  "background_color": "#ffffff"
+}

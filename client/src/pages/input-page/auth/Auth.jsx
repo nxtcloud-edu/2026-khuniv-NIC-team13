@@ -1,0 +1,71 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import InputPageLayout from "../layouts/InputPageLayout";
+import GuideSection from "./layouts/GuideSection";
+import AuthFormSection from "./layouts/AuthFormSection";
+import GuideBox from "./components/GuideBox";
+import Button from "../components/Button";
+import Header from "components/Header/Header";
+import ReportExistsModal from "pages/landing-page/1-main/components/ReportExistsModal";
+
+const isMobile = () => window.innerWidth <= 767;
+
+function Auth() {
+  const [guideConfirmed, setGuideConfirmed] = useState(!isMobile());
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (sessionStorage.getItem("showReportModal") === "true") {
+      sessionStorage.removeItem("showReportModal");
+      setShowModal(true);
+    }
+  }, []);
+
+  if (!guideConfirmed) {
+    return (
+      <>
+        {showModal && (
+          <ReportExistsModal
+            onClose={() => setShowModal(false)}
+            onConfirm={() => { setShowModal(false); navigate("/analysis"); }}
+          />
+        )}
+      <div className="min-h-screen flex flex-col">
+        <Header />
+          <div className="flex-1 flex flex-col px-[20px] pt-[calc(clamp(52px,calc(2.5vw+28px),64px)+24px)] pb-[40px]">
+          <h1 className="text-[20px] font-semibold leading-[120%] text-black font-['Pretendard']">
+            Pertineo 3D 역량 분석
+          </h1>
+          <p className="mt-[8px] text-[14px] font-normal leading-[150%] text-black font-['Pretendard']">
+            희망 기업과 직무, 본인의 역량 정보를 입력하면 Pertineo가 커리어 분석 보고서를 생성합니다.
+          </p>
+          <div className="flex-1 mt-[24px]">
+            <GuideBox />
+          </div>
+          <div className="mt-[32px] flex justify-center">
+            <Button size="M" onClick={() => setGuideConfirmed(true)}>확인</Button>
+          </div>
+        </div>
+      </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {showModal && (
+        <ReportExistsModal
+          onClose={() => setShowModal(false)}
+          onConfirm={() => { setShowModal(false); navigate("/analysis"); }}
+        />
+      )}
+      <InputPageLayout>
+        <GuideSection />
+        <AuthFormSection />
+      </InputPageLayout>
+    </>
+  );
+}
+
+export default Auth;
