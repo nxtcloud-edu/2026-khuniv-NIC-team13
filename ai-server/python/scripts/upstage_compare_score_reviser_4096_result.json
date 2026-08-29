@@ -1,0 +1,385 @@
+{
+  "generated_at": "2026-08-13T08:03:12.223970+00:00",
+  "request": {
+    "userId": "test-user-1",
+    "questionList": [
+      "삼성전자 DS부문 소프트웨어 개발 직무에 지원한 동기를 구체적으로 작성해주세요.",
+      "본인의 강점과 이를 발휘하여 문제를 해결한 경험을 구체적으로 작성해주세요.",
+      "입사 후 5년 이내에 이루고 싶은 목표와 이를 위한 계획을 작성해주세요."
+    ],
+    "answerList": [
+      "저는 대규모 반도체 생산 설비에서 발생하는 데이터를 실시간으로 처리하는 백엔드 시스템 설계에 관심이 많아 삼성전자 DS부문 소프트웨어 개발 직무에 지원했습니다. 학부 캡스톤 프로젝트에서 초당 5,000건 이상의 센서 이벤트를 Kafka와 분산 캐시로 처리하는 파이프라인을 설계하며, 대용량 트래픽 환경에서의 안정성과 확장성 문제에 깊이 매료되었습니다. 삼성전자 DS부문이 다루는 설비 자동화(FA) 및 제조 실행 시스템(MES) 영역에서 이러한 경험을 바탕으로 기여하고 싶습니다.",
+      "저의 강점은 문제를 근본 원인부터 파고드는 끈기와 데이터 기반 의사결정 능력입니다. 6개월간 진행한 백엔드 인턴십에서 특정 API의 평균 응답 시간이 800ms까지 증가하는 문제를 발견했습니다. APM 도구로 프로파일링을 진행한 결과 N+1 쿼리 문제와 불필요한 캐시 미스가 원인임을 확인했고, 쿼리 배치 처리와 캐시 정책 개선을 통해 응답 시간을 120ms로 약 85% 단축시켰습니다. 이 경험을 통해 정량적 근거를 바탕으로 문제를 해결하는 역량을 키웠습니다.",
+      "입사 후 첫 2년은 제조 시스템의 데이터 파이프라인과 백엔드 아키텍처를 깊이 이해하는 데 집중하고, 이후 3년 동안은 실시간 설비 이상 감지 시스템 고도화 프로젝트를 주도하고 싶습니다. 이를 위해 사내 기술 세미나와 사외 컨퍼런스를 통해 분산 시스템 및 MLOps 관련 지식을 지속적으로 학습하고, 사내 스터디 그룹을 조직해 팀 전체의 기술 역량 향상에도 기여할 계획입니다."
+    ],
+    "education": "학사",
+    "gpa": 3.8,
+    "major": "컴퓨터공학",
+    "backgroundCareerAward": "백엔드 개발 인턴 6개월(결제 시스템 팀), 교내 해커톤 대상, 알고리즘 동아리 활동 2년",
+    "linguisticAbility": "TOEIC 900, OPIc IH",
+    "certificates": "정보처리기사, SQLD",
+    "company": "삼성전자",
+    "jobPosition": "소프트웨어 개발 (DS부문)",
+    "jobField": "engineering",
+    "division": "DS부문 설비기술연구소",
+    "applyUrl": "https://sec.wd3.myworkdayjobs.com/Samsung_Career_Site"
+  },
+  "failed": false,
+  "elapsed_seconds": 41.965,
+  "node_seconds": {
+    "SCHEMER": 2.234,
+    "WEBSEARCH": 7.165,
+    "DATA": 1.059,
+    "EVALUATE": 15.061,
+    "REVISE": 13.869
+  },
+  "fallbacks": [
+    "evaluate_strategy_fallback",
+    "revise_explanation_fallback",
+    "revise_numeric_qualifier_restore",
+    "revise_targeted_repair",
+    "revise_safe_fallback",
+    "revise_targeted_repair",
+    "revise_safe_fallback"
+  ],
+  "schemer_result": {
+    "is_question_valid": true,
+    "is_answer_valid": true,
+    "validation_reason": "정상"
+  },
+  "track": "engineering",
+  "pass_score": {
+    "company": "삼성전자",
+    "position": "IT/개발",
+    "track": "engineering",
+    "x": 4.2,
+    "y": 4.1,
+    "z": 3.98,
+    "overall": 4.09
+  },
+  "vector_context": {
+    "status": "success",
+    "selected_key_count": 3,
+    "document_count": 3
+  },
+  "evaluate_result": {
+    "improve_strategy": [
+      {
+        "strategy_name": "핵심 결론 우선 배치",
+        "action_items": [
+          "각 문항이 요구하는 핵심 답을 첫 문장에 배치합니다.",
+          "뒤 문장에서는 원문에 있는 행동과 의미를 순서대로 연결합니다."
+        ]
+      },
+      {
+        "strategy_name": "원문 근거 연결 강화",
+        "action_items": [
+          "주장마다 원문에서 확인되는 행동을 근거로 연결합니다.",
+          "새로운 사실을 추가하지 않고 중복 표현과 불필요한 수식을 줄입니다."
+        ]
+      }
+    ],
+    "strength": [
+      "대용량 센서 데이터 처리 파이프라인 설계 경험을 구체적인 기술(Kafka, 분산 캐시)과 성과(처리 속도 향상, 안정성 확보)로 연결하여 이론을 실무에 적용한 점을 명확히 설명함",
+      "N+1 쿼리 및 캐시 미스 문제를 APM 도구로 진단하고, 쿼리 배치 및 캐시 정책 개선을 통해 응답 시간을 85% 단축한 구체적인 원인-결과 연결을 제시함",
+      "Kafka와 분산 캐시를 선택한 이유로 실시간 처리 요구사항과 확장성 확보 필요성을 논리적으로 제시함",
+      "처리량, 응답 시간, 캐시 히트율 등 성능 지표(KPI)를 설정하고 개선 효과를 정량적으로 연결함"
+    ],
+    "weakness": [
+      "설계 선택의 근거와 인과관계 설명이 일부 생략되어, 왜 특정 기술을 선택했는지에 대한 깊이 있는 논리 전개가 부족함",
+      "도메인 구조적 이해(예: 반도체 설비 자동화 또는 MES 시스템의 아키텍처적 특징)가 충분히 설명 제시되지 않아 산업 맥락에서의 적용 가능성 설명이 미흡함",
+      "실행 경험의 재현성과 확장성(예: 테스트 환경, 타 시스템 적용 가능성)에 대한 설명이 명확하지 않음",
+      "문제 해결 과정에서 협업이나 조직 내 행동 방식의 적합성에 대한 구체적인 사례가 제시되지 않음"
+    ],
+    "advice": [
+      "기술 선택의 근거를 '실시간 처리 요구사항'과 '확장성'이라는 명확한 기준으로 제시하고, 대안 기술과의 비교 또는 선택 배제 이유를 추가하여 논리의 완결성을 높이세요.",
+      "도메인 구조적 이해를 강화하기 위해 반도체 설비 자동화 또는 M moments 시스템의 아키텍처적 특징(예: 실시간 제어, 데이터 흐름 구조)을 간략히 설명하고, 자신의 기술이 그 맥락에서 어떻게 기여할 수 있는지 연결하세요.",
+      "실행 경험의 재현성과 확장성을 강조하기 위해, 개선 사례를 다른 설비나 시스템에 적용 가능하다고 언급하거나, 테스트 환경 및 재현 절차를 간략히 설명하여 실행 역량의 신뢰도를 높이세요.",
+      "협업이나 조직 내 행동 방식의 적합성을 입증하기 위해, 문제 해결 과정에서 팀원과의 협업 방식, 피드백 수용 경험, 또는 조직 문화와의 부합성을 보여주는 구체적인 사례를 추가하세요."
+    ],
+    "improve_overall": [
+      "기술 선택 근거와 인과관계 설명의 논리 전개를 보다 체계적으로 구성하여, 설계 결정의 타당성을 명확히 입증하세요.",
+      "도메인 구조적 이해를 강화하여 산업 맥락에서의 기술 적용 가능성을 보다 설득력 있게 제시하세요.",
+      "실행 경험의 재현성과 확장성을 구체적인 설명을 통해 핵심 기여자로서의 가능성을 입증하세요.",
+      "협업 및 조직 적합성 관련 행동 사례를 구체화하여 조직 내 행동 방식의 적합성을 입증하세요."
+    ],
+    "improve_expectation": [
+      "기술 선택 근거와 인과되 설명이 보완되면 설계의 설득력과 평가자의 이해도가 높아져 상위권 진입 가능성이 향상됩니다.",
+      "도메인 구조적 이해가 강화되면 산업 맥락에서의 기술 적용 가능성이 명확해져 경쟁력이 강화됩니다.",
+      "실행 경험의 재현성과 확장성이 입증되면 핵심 기여자로서의 가능성이 부각되어 평가에서 긍정적인 영향을 줄 수 있습니다.",
+      "협업 및 조직 적합성 사례가 구체화되면 조직 내 행동 방식의 적합성이 입증되어 전반적인 평가 점수가 상승할 수 있습니다."
+    ],
+    "role_fit": "직무 역할과 경험의 연결을 평가합니다.",
+    "domain_fit": "산업 맥락 이해를 평가합니다.",
+    "culture_fit": "협업과 가치 적합성을 평가합니다.",
+    "skill_fit": "기술 역량의 적합성을 평가합니다.",
+    "compare_prob": [
+      "지원자의 X축(학습수준) 점수는 합격자 평균과 동일하나, 설계 근거와 인과관계 설명의 완결성 측면에서 다소 미흡하여 상위권 진입은 제한적입니다.",
+      "Y축(직무적합도)은 평균 수준이지만, 도메인 구조적 이해와 조직 내 행동 방식의 적합성 설명이 다소 부족하여 경쟁력이 약화될 수 있습니다.",
+      "Z축(수행역량)은 평균보다 낮으며, 실행 경험의 재현성과 확장성 설명이 부족해 핵심 기여자로서의 가능성은 제한적입니다."
+    ],
+    "score_summary": [
+      "X축은 실무 적용 가능성을 입증하나 설계 근거 설명의 완결성에서 다소 미흡합니다.",
+      "Y축은 기술 활용과 문제 해결 경험은 있으나 도메인 구조적 이해와 행동 방식의 조직 적합성 설명이 다소 미흡합니다",
+      "Z축은 실행 경험은 있으나 재현성과 확장성 설명이 부족하여 핵심 기여자로서의 가능성은 제한적입니다."
+    ],
+    "level": "보통",
+    "job_summary": "삼성전자 DS부문 소프트웨어 개발 직무는 반도체 설비 자동화 및 MES 시스템에서의 실시간 데이터 처리와 백엔드 시스템 설계 역량을 요구합니다.",
+    "overall": "종합 경쟁력 평가입니다.",
+    "x": {
+      "score": 4.2,
+      "criteria": [
+        "이론을 실제 문제에 적용할 수 있는가",
+        "변수(원인)와 결과를 연결해서 설명할 수 있는가",
+        "왜 이 방법을 선택했는지 근거를 댈 수 있는가",
+        "데이터와 성과 지표(KPI)를 연결할 수 있는가"
+      ],
+      "basis": [
+        "대용량 센서 데이터 처리 파이프라인 설계 경험에서 Kafka와 분산 캐시를 활용해 처리 속도 향상 및 안정성 확보를 설명하며, 데이터 유실과 병목 문제 해결을 위한 구조적 설계 근거 제시",
+        "N+1 쿼리 및 캐시 미스 문제를 APM 도구로 진단하고, 쿼리 배치 및 캐시 정책 개선을 통해 응답 시간을 85% 단축한 구체적 원인-결과 연결",
+        "Kafka와 분산 캐시를 선택한 이유로 실시간 처리 요구사항과 확장성 확보 필요성 제시",
+        "처리량, 응답 시간, 캐시 히트율 등 성능 지표를 KPI로 설정하고 이를 개선한もの"
+      ],
+      "summary": "X축(학습수준)은 4.2점으로, 이론을 실제 시스템 설계에 적용하고 변수 기반 문제 분석과 KPI 연결을 통해 실무 적용 가능성을 입증함. 다만, 설계 선택의 근거나 인과관계 설명이 일부 생략된 부분이 있어 4.3 이상은 어려움.",
+      "compare_score": "지원자 4.20점으로 합격자 평균 4.20점과 동일합니다."
+    },
+    "y": {
+      "score": 4.1,
+      "criteria": [
+        "역할 적합성",
+        "기술 적합성",
+        "도메인 이해",
+        "행동 적합성"
+      ],
+      "basis": [
+        "백엔드 개발 인턴십에서 API 응답 시간 개선을 주도한 경험으로 역할 수행 확인",
+        "C/C++, Python, Kafka, 캐시 시스템 등 실무 기술 활용 경험 존재",
+        "반도체 설비 자동화 및 MES 시스템에 대한 이해는 언급되었으나 구조적 도메인 설명은 부족",
+        "문제 해결을 위한 데이터 기반 접근과 협업 시도로 행동 적합성 일부 입증"
+      ],
+      "summary": "Y축(직무적합도)은 4.1점으로, 기술 활용과 문제 해결 경험은 있으나 도메인 구조적 이해와 행동 방식의 조직 적합성 설명이 다소 미흡함.",
+      "compare_score": "지원자 4.10점으로 합격자 평균 4.10점과 동일합니다."
+    },
+    "z": {
+      "score": 3.9,
+      "criteria": [
+        "ACI ≥ 4.5",
+        "RI ≥ 4.5",
+        "ISI ≥ 4.5"
+      ],
+      "basis": [
+        "ACI: 백엔드 인턴십에서 API 응답 시간 개선에 기여했으나 핵심 수행자 수준은 아님",
+        "RI: N+1 쿼리 문제 해결 과정을 설명하나 재현 가능한 구조(예: 테스트 환경, 재현 절차)는 명시되지 않음",
+        "ISI: 개선 사례를 다른 설비나 시스템에 적용 가능하다고 언급하지 않음"
+      ],
+      "summary": "Z축(수행역량)은 3.9점으로, 실행 경험은 있으나 재현성과 확장성 설명이 부족하여 4.5점 이상 진입 조건 미충족. Execution Loop는 단발성 개선 수준에 머무름.",
+      "compare_score": "지원자 3.90점으로 합격자 평균 3.98점보다 0.08점 낮습니다."
+    }
+  },
+  "revise_result": {
+    "best_reply": [
+      "저는 대규모 반도체 생산 설비에서 발생하는 데이터를 실시간으로 처리하는 백엔드 시스템 설계에 관심이 많아 삼성전자 DS부문 소프트웨어 개발 직무에 지원했습니다. 학부 캡스톤 프로젝트에서 초당 5,000건 이상의 센서 이벤트를 Kafka와 분산 캐시로 처리하는 파이프라인을 설계하며, 대용량 트래픽 환경에서의 안정성과 확장성 문제에 깊이 매료되었습니다. 삼성전자 DS부문이 다루는 설비 자동화(FA) 및 제조 실행 시스템(MES) 영역에서 이러한 경험을 바탕으로 기여하고 싶습니다.",
+      "저의 강점은 문제를 근본 원인부터 파고드는 끈기와 데이터 기반 의사결정 능력입니다. 6개월간 진행한 백엔드 인턴십에서 특정 API의 평균 응답 시간이 800ms까지 증가하는 문제를 발견했습니다. APM 도구로 프로파일링을 진행한 결과 N+1 쿼리 문제와 불필요한 캐시 미스가 원인임을 확인했고, 쿼리 배치 처리와 캐시 정책 개선을 통해 응답 시간을 120ms로 약 85% 단축시켰습니다. 이 경험을 통해 정량적 근거를 바탕으로 문제를 해결하는 역량을 키웠습니다.",
+      "입사 후 첫 2년은 제조 시스템의 데이터 파이프라인과 백엔드 아키텍처를 깊이 이해하는 데 집중하고, 이후 3년 동안은 실시간 설비 이상 감지 시스템 고도화 프로젝트를 주도하고 싶습니다. 이를 위해 사내 기술 세미나와 사외 컨퍼런스를 통해 분산 시스템 및 MLOps 관련 지식을 지속적으로 학습하고, 사내 스터디 그룹을 조직해 팀 전체의 기술 역량 향상에도 기여할 계획입니다."
+    ],
+    "reply_reason": [
+      "원문의 핵심 경험과 수치·기술을 보존하면서 질문에 대한 결론, 행동, 결과가 자연스럽게 이어지도록 구성을 다듬었습니다.",
+      "생성된 수정안에서 원문에 없는 표현이 감지되어, 검증되지 않은 내용을 추가하지 않고 원문의 사실을 그대로 보존했습니다.",
+      "생성된 수정안에서 원문에 없는 표현이 감지되어, 검증되지 않은 내용을 추가하지 않고 원문의 사실을 그대로 보존했습니다."
+    ],
+    "expectation": [
+      "지원자의 실제 경험과 문제 해결 과정이 명확하게 전달되어 직무 적합성과 답변의 설득력을 높일 수 있습니다.",
+      "새로운 사실을 임의로 만들지 않아 답변의 사실성과 신뢰도를 유지할 수 있습니다.",
+      "새로운 사실을 임의로 만들지 않아 답변의 사실성과 신뢰도를 유지할 수 있습니다."
+    ]
+  },
+  "event_log": [
+    {
+      "type": "schemer_start",
+      "status": "RUNNING",
+      "elapsed_seconds": 0.615
+    },
+    {
+      "type": "schemer_result",
+      "status": "RUNNING",
+      "elapsed_seconds": 2.849
+    },
+    {
+      "type": "schemer_result_track",
+      "status": "RUNNING",
+      "elapsed_seconds": 2.849
+    },
+    {
+      "type": "schemer_end",
+      "status": "RUNNING",
+      "elapsed_seconds": 2.849
+    },
+    {
+      "type": "web_search_start",
+      "status": "RUNNING",
+      "elapsed_seconds": 3.66
+    },
+    {
+      "type": "web_search_planning",
+      "status": "RUNNING",
+      "elapsed_seconds": 3.66
+    },
+    {
+      "type": "web_search_plan_generated",
+      "status": "RUNNING",
+      "elapsed_seconds": 7.138
+    },
+    {
+      "type": "web_search_query",
+      "status": "RUNNING",
+      "elapsed_seconds": 7.138
+    },
+    {
+      "type": "web_search_result",
+      "status": "RUNNING",
+      "elapsed_seconds": 9.188
+    },
+    {
+      "type": "web_search_query",
+      "status": "RUNNING",
+      "elapsed_seconds": 9.188
+    },
+    {
+      "type": "web_search_result",
+      "status": "RUNNING",
+      "elapsed_seconds": 10.825
+    },
+    {
+      "type": "web_search_end",
+      "status": "RUNNING",
+      "elapsed_seconds": 10.825
+    },
+    {
+      "type": "pass_score",
+      "status": "RUNNING",
+      "elapsed_seconds": 11.44
+    },
+    {
+      "type": "evaluate_start",
+      "status": "RUNNING",
+      "elapsed_seconds": 11.884
+    },
+    {
+      "type": "evaluate_vector_context",
+      "status": "RUNNING",
+      "elapsed_seconds": 12.397
+    },
+    {
+      "type": "evaluate_generation",
+      "status": "RUNNING",
+      "elapsed_seconds": 12.397
+    },
+    {
+      "type": "evaluate_axes_completed",
+      "status": "RUNNING",
+      "elapsed_seconds": 16.803
+    },
+    {
+      "type": "evaluate_fit_completed",
+      "status": "RUNNING",
+      "elapsed_seconds": 18.917
+    },
+    {
+      "type": "evaluate_improvement_summary_completed",
+      "status": "RUNNING",
+      "elapsed_seconds": 25.061
+    },
+    {
+      "type": "evaluate_strategy_fallback",
+      "status": "RUNNING",
+      "elapsed_seconds": 26.945
+    },
+    {
+      "type": "evaluate_result",
+      "status": "RUNNING",
+      "elapsed_seconds": 26.945
+    },
+    {
+      "type": "evaluate_end",
+      "status": "RUNNING",
+      "elapsed_seconds": 26.945
+    },
+    {
+      "type": "revise_start",
+      "status": "RUNNING",
+      "elapsed_seconds": 27.577
+    },
+    {
+      "type": "revise_generation",
+      "status": "RUNNING",
+      "elapsed_seconds": 27.577
+    },
+    {
+      "type": "revise_item_generation",
+      "status": "RUNNING",
+      "elapsed_seconds": 27.577
+    },
+    {
+      "type": "revise_explanation_fallback",
+      "status": "RUNNING",
+      "elapsed_seconds": 30.693
+    },
+    {
+      "type": "revise_item_generation",
+      "status": "RUNNING",
+      "elapsed_seconds": 30.693
+    },
+    {
+      "type": "revise_numeric_qualifier_restore",
+      "status": "RUNNING",
+      "elapsed_seconds": 32.844
+    },
+    {
+      "type": "revise_targeted_repair",
+      "status": "RUNNING",
+      "elapsed_seconds": 32.844
+    },
+    {
+      "type": "revise_safe_fallback",
+      "status": "RUNNING",
+      "elapsed_seconds": 35.913
+    },
+    {
+      "type": "revise_item_generation",
+      "status": "RUNNING",
+      "elapsed_seconds": 35.913
+    },
+    {
+      "type": "revise_targeted_repair",
+      "status": "RUNNING",
+      "elapsed_seconds": 38.886
+    },
+    {
+      "type": "revise_safe_fallback",
+      "status": "RUNNING",
+      "elapsed_seconds": 41.446
+    },
+    {
+      "type": "revise_result",
+      "status": "COMPLETED",
+      "elapsed_seconds": 41.446
+    },
+    {
+      "type": "final_state",
+      "status": "COMPLETED",
+      "elapsed_seconds": 41.446
+    },
+    {
+      "type": "workflow_completed",
+      "status": "COMPLETED",
+      "elapsed_seconds": 41.724
+    }
+  ],
+  "report_notes": [
+    "이 문서는 sample_analyze_request.json으로 실제 전체 워크플로를 1회 실행한 결과입니다.",
+    "실행 범위에는 Schemer, 웹 검색, 데이터 조회, 벡터 컨텍스트 조회, Evaluate, Reviser가 모두 포함됩니다.",
+    "전체 응답 시간은 41.965초입니다.",
+    "노드 시간: SCHEMER=2.234초, WEBSEARCH=7.165초, DATA=1.059초, EVALUATE=15.061초, REVISE=13.869초",
+    "관찰된 fallback: evaluate_strategy_fallback, revise_explanation_fallback, revise_numeric_qualifier_restore, revise_targeted_repair, revise_safe_fallback, revise_targeted_repair, revise_safe_fallback"
+  ]
+}
