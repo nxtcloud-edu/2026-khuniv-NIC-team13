@@ -1,0 +1,7 @@
+Applicant's Background:{applicant_info}
+
+Company's Questions:{questions}
+
+Applicant's Answers:{answers}
+
+Give user fitted evaluation. not general evaluation.

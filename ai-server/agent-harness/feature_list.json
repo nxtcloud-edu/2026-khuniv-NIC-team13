@@ -1,0 +1,92 @@
+{
+  "project": "Pertineo AI 2.0",
+  "updated": "2026-08-29",
+  "features": [
+    {
+      "id": "feat-001",
+      "name": "SSE resume analysis API",
+      "description": "Expose /api/agent/analyze/stream and run analysis workflow asynchronously via StateGraphEngine.",
+      "dependencies": [],
+      "status": "active",
+      "evidence": "AgentController and AgentState mapping present. On 2026-08-11 a 15-second SSE comment heartbeat and focused stream tests were added while preserving the 10-minute inactivity limit; broader route-level contract coverage remains."
+    },
+    {
+      "id": "feat-002",
+      "name": "Workflow node pipeline",
+      "description": "Coordinate data, web search, schemer, evaluator, reviser, and agent state transitions.",
+      "dependencies": [
+        "feat-001"
+      ],
+      "status": "active",
+      "evidence": "WorkflowEvent/WorkflowEventSink/SseWorkflowEventSink seam added on 2026-05-31. Python EXAONE reliability work added confirmed-invalid semantics, bounded per-node retry with state rollback, four-stage evaluation, isolated revision with safe fallback, and SSE heartbeat coverage. On 2026-08-13 raw structured-output and retry diagnostics identified deterministic z=3.98 schema-validator conflict; score is now a model-visible inline numeric enum covering 1.0-5.0 in tenth steps. Reviser preserves source-backed persuasive rewriting, validates complete/grounded answers separately from auxiliary explanations, restores omitted numeric qualifiers, and allows 4,096 output tokens per question. It now compiles Evaluate strategy into source-grounded editing operations, rejects exact/near-copy candidates in Python, and uses deterministic first generation plus sampled corrections. Five- and seven-attempt live comparisons led to a final five-attempt ceiling: five-attempt runs revised 13/15 answers with 24.886s mean and 26.422s p95, while seven attempts revised 19/21 with 25.437s mean but 38.755s p95 and the same two safe fallbacks. Documented semantic-attribution risks remain. Axis compare_score text is computed deterministically in code from applicant and DynamoDB pass-average scores. Routing string enum cleanup remains."
+    },
+    {
+      "id": "feat-003",
+      "name": "Previous resume data repository",
+      "description": "Read previous resume context text from DynamoDB for vector-selected reference documents.",
+      "dependencies": [],
+      "status": "active",
+      "evidence": "getResumeText repository test passed on 2026-05-22; unused getScoreByCompanyAndPosition contract removed."
+    },
+    {
+      "id": "feat-004",
+      "name": "External AI/search/vector integrations",
+      "description": "Use OpenAI models, Tavily, and S3 Vectors through service adapters.",
+      "dependencies": [
+        "feat-002"
+      ],
+      "status": "active",
+      "evidence": "Vector evaluation context added on 2026-06-02. K-EXAONE/Friendli reliability work passed 72 tests on 2026-08-11. On 2026-08-12 Upstage Embed 2 migration tooling and query support were verified, 1,991 Upstage vectors were regenerated into a verified local JSONL, and a local exact-cosine A/B showed directional gains over OpenAI on the cleaned 19-query proxy set with significant labeling caveats. On 2026-08-13 the saved 1,024-dimensional vectors were temporarily uploaded 1,991/1,991; the live application completed Upstage query embedding, S3 Top-3, three DynamoDB context reads, EXAONE evaluation/revision, and JSON report output. The temporary Upstage index was then deleted and the original 1,536-dimensional index was verified unchanged at 1,991 vectors. On 2026-08-29 the active runtime was unified on OpenAI: shared structured calls moved to Responses API, smart parsing retained its OpenAI nano/mini fallback, embeddings were fixed to the existing OpenAI 1,536-dimensional index, and 157 Python tests passed. Historical EXAONE/Upstage comparison tools remain isolated from runtime settings."
+    },
+    {
+      "id": "feat-005",
+      "name": "Resume file parsing API",
+      "description": "Accept PDF/DOCX/TXT resume uploads and extract form-compatible field labels and values.",
+      "dependencies": [
+        "feat-004"
+      ],
+      "status": "active",
+      "evidence": "Issue #3 adds /api/parse/file with validated uploads, OpenAI Responses file input, and mocked contract tests. Live production deployment remains pending."
+    },
+    {
+      "id": "feat-006",
+      "name": "Career job recommendations",
+      "description": "Infer suitable roles from a structured career profile, discover and verify active job postings, and return up to three auditable recommendations.",
+      "dependencies": [
+        "feat-004"
+      ],
+      "status": "done",
+      "evidence": "Implemented on 2026-08-29 on feature/career-job-recommendations with profile-based role inference, Tavily candidate search, bounded active-link verification, grounded requirement extraction, deterministic score breakdowns, and camelCase API coverage. Full Python suite passed 147 tests; live Tavily/Friendli execution was not run."
+    },
+    {
+      "id": "feat-007",
+      "name": "Target career roadmap",
+      "description": "Use verified target-role/company postings to aggregate repeated requirements, identify evidence-backed profile gaps, and return exact 1/3/6/12-month milestones.",
+      "dependencies": [
+        "feat-006"
+      ],
+      "status": "done",
+      "evidence": "Implemented on 2026-08-29 on feature/career-roadmap. Reuses verified recommendations, reports requirement source counts/URLs, excludes unsupported profile claims, and validates exact ordered 1/3/6/12-month milestones for both model and fallback paths. Full Python suite passed 152 tests; live Tavily/Friendli execution was not run."
+    },
+    {
+      "id": "feat-008",
+      "name": "Data-backed company recommendations",
+      "description": "Rank currently actionable companies from self-introduction evidence, historical successful-application score baselines, sample confidence, and verified live job requirements.",
+      "dependencies": [
+        "feat-003",
+        "feat-004",
+        "feat-006"
+      ],
+      "status": "done",
+      "evidence": "Implemented and live-verified on 2026-08-29 on feature/data-backed-company-recommendations. Added role evidence and X/Y/Z assessment, paginated company/track aggregation with default n>=10, DB-first company candidate ranking, active-job verification, and a transparent 50/40/10 score. Full Python suite passed 162 tests; live DynamoDB preflight found 38 engineering companies across 1,866 samples. A dotenv-loaded synthetic OpenAI/DynamoDB/Tavily request returned HTTP 200 in 43.110 seconds with three distinct recommendations and exact score sums. Quality is not yet approved: the selected postings had zero role contribution and no extracted requirements, and the LG Electronics result linked to a partner-company listing."
+    },
+    {
+      "id": "harness-001",
+      "name": "Agent harness",
+      "description": "Provide AGENTS.md routing, state tracking, verification commands, and restart handoff files for coding agents.",
+      "dependencies": [],
+      "status": "done",
+      "evidence": "./init.sh passed on 2026-05-22; GitHub issue-first branch workflow and PR template rules documented on 2026-05-31; docker compose stream smoke hook documented/added on 2026-06-02."
+    }
+  ]
+}

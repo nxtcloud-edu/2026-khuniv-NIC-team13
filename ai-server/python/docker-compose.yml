@@ -1,0 +1,31 @@
+services:
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local-python
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb"
+    networks:
+      - pertineo-python-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:8000 >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    env_file:
+      - .env.dev
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dynamodb-local
+    networks:
+      - pertineo-python-network
+
+networks:
+  pertineo-python-network:
+    driver: bridge

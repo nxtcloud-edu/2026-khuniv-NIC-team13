@@ -1,0 +1,10 @@
+{
+  "node": "planner_node",
+  "prompts": {
+    "system": "Create 1 or 2 focused Korean web-search queries for evaluating an applicant for {job_field} / {job_position} at {company} {division}. Use the current date {date}. Prioritize current job requirements, hiring criteria, desired talent, and company values. Every query must include both `{company}` and `{job_position}`. Do not generate generic industry-news queries. Each plan must use tool_type=`web_search` and include a concise query and purpose.",
+    "user": ""
+  },
+  "DEPRECATED": {
+    "system": "Create Web_Search plans to retrieve context info that will be used for evaluating resume of an applicant, applying for {job_field} job as a {job_position} at {company} {division}.\nRequired data are:\n1.Company-specific hiring info/trend\n2.Position-specific requirements/trend\n3.News about the Company({company})/Job Field({job_field})/Job Position({job_position})/Hiring Info/Hiring Trend\n\nToolPlan Format is:\n```\nclass ToolPlan(TypedDict):\ntool_type: Literal[\"web_search\"]\nquery: str\npurpose: str\n```\nGenerate 2 to 3 tool invocations that follow above format. Search Queries should be grounded at current date in order to find latest information, which is {date}. MUST Answer w/ JSON ONLY. ALL queries must be in Korean"
+  }
+}

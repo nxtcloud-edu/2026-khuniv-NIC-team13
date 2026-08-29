@@ -1,0 +1,29 @@
+{
+  "profile": {
+    "userId": "synthetic-company-recommendation-user",
+    "education": "학사",
+    "gpa": 3.8,
+    "major": "컴퓨터공학",
+    "experienceYears": 1,
+    "experienceSummary": "백엔드 개발 인턴 6개월과 실시간 데이터 처리 프로젝트 경험",
+    "skills": ["Python", "FastAPI", "Java", "Spring Boot", "Kafka", "AWS"],
+    "projects": [
+      "Kafka와 분산 캐시를 사용해 초당 5,000건의 센서 이벤트를 처리하는 파이프라인 설계",
+      "API 쿼리와 캐시 정책을 개선해 평균 응답 시간을 800ms에서 120ms로 단축"
+    ],
+    "certificates": ["정보처리기사", "SQLD"],
+    "languages": ["TOEIC 900", "OPIc IH"]
+  },
+  "questionList": [
+    "지원 직무와 관련된 경험을 작성해주세요.",
+    "문제를 해결하고 성과를 만든 경험을 작성해주세요."
+  ],
+  "answerList": [
+    "학부 프로젝트에서 Kafka와 분산 캐시를 사용해 초당 5,000건 이상의 센서 이벤트를 처리하는 백엔드 파이프라인을 설계했습니다. 메시지 적체와 장애 복구 조건을 분석하고 재처리 구조를 구현했습니다.",
+    "백엔드 인턴십에서 API 평균 응답 시간이 800ms까지 증가한 문제를 APM으로 분석했습니다. N+1 쿼리와 캐시 미스를 확인한 뒤 배치 조회와 캐시 정책을 개선해 평균 응답 시간을 120ms로 약 85% 단축했습니다."
+  ],
+  "locations": ["서울", "경기"],
+  "minimumSampleCount": 10,
+  "companyCandidateLimit": 10,
+  "resultLimit": 3
+}

@@ -1,0 +1,2 @@
+Applicant Input Data:
+{applicant_input_data}
