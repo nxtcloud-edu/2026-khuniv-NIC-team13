@@ -1,10 +1,10 @@
+![자기소개서 분석 파이프라인](./KakaoTalk_Photo_2026-08-29-12-08-57.png)
+
 # Pertineo (KWS) — AI 기반 자기소개서 분석·커리어 지원 플랫폼
 
 ## 시스템 아키텍처
 
 이 저장소는 프런트엔드, 코어 API, AI API를 분리한 3계층 모노레포입니다.
-
-![사진](./KakaoTalk_Photo_2026-08-29-12-08-57.png)
 
 > **현재 통합 상태**
 > `client`는 코어 API의 `POST /api/analysis`를 호출하지만, 현재 `server`의 해당 라우트는 실제 AI 서버를 호출하지 않고 `analysis-engine-unavailable` SSE 이벤트를 반환합니다. 실제 분석 엔진은 `ai-server/python`의 `POST /api/agent/analyze/stream`에 구현되어 있습니다. 따라서 전체 사용자 흐름을 완성하려면 코어 API에서 AI API로 요청과 SSE를 중계하는 프록시 계층이 필요합니다.
