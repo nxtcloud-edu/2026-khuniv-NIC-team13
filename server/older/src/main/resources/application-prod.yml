@@ -1,0 +1,32 @@
+# 프로덕션 환경 설정
+# 이 파일은 spring.profiles.active=prod일 때 자동으로 로드됩니다
+
+# CloudWatch 메트릭 활성화 (API 응답 시간 등)
+management:
+  cloudwatch:
+    metrics:
+      export:
+        enabled: true
+
+# DynamoDB 설정 (AWS DynamoDB 사용)
+# endpoint는 설정하지 않음 (AWS DynamoDB 사용)
+# 테이블 이름은 환경 변수로 오버라이드 가능 (Terraform에서 설정)
+dynamodb:
+  region: ap-northeast-2
+  tables:
+    notices: ${DYNAMODB_NOTICE_TABLE_NAME:pertino-prod-notice}
+    emails: ${DYNAMODB_EMAIL_TABLE_NAME:pertino-prod-email}
+    admins: ${DYNAMODB_ADMIN_TABLE_NAME:pertino-prod-admin}
+    whitelist: ${DYNAMODB_WHITELIST_TABLE_NAME:pertino-prod-whitelist}
+    properties: ${DYNAMODB_PROPERTIES_TABLE_NAME:pertino-prod-properties}
+    locks: ${DYNAMODB_LOCK_TABLE_NAME:pertino-prod-lock}
+    access-codes: ${DYNAMODB_ACCESS_CODE_TABLE_NAME:pertino-prod-access-code}
+    popups: ${DYNAMODB_POPUP_TABLE_NAME:pertino-prod-popup}
+    sessions: ${DYNAMODB_SESSIONS_TABLE_NAME:pertino-prod-sessions}
+    member-documents: ${DYNAMODB_MEMBER_DOCUMENTS_TABLE_NAME:pertino-prod-member-documents}
+
+pertineo:
+  session:
+    same-site: None
+    secure: true
+

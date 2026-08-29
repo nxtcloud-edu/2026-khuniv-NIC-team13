@@ -1,0 +1,18 @@
+# Terraform Cloud에서 자동으로 로드되는 변수 파일
+# 이 파일을 terraform.auto.tfvars로 복사하여 사용하세요
+# 주의: terraform.auto.tfvars는 Git에 커밋하지 마세요!
+
+# AWS 설정
+aws_region   = "ap-northeast-2"
+project_name = "pertino"
+environment  = "dev"
+
+# 네트워크 설정
+vpc_cidr             = "10.0.0.0/16"
+availability_zones   = ["ap-northeast-2a", "ap-northeast-2b"]
+enable_nat_gateway   = true
+enable_vpc_endpoints = true
+
+# 도메인 설정 (선택사항)
+# domain_name = "example.com"
+

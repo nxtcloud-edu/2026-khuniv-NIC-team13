@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - prometheus:9090
+
+  - job_name: demo-app
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - app:8080

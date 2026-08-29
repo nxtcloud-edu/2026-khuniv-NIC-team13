@@ -1,0 +1,25 @@
+# Terraform Cloud Backend Configuration Example
+# 
+# This file is for reference only. Actual backend configuration should be
+# placed in environments/dev/backend.tf and environments/prod/backend.tf
+#
+# Example cloud configuration (Terraform 1.6.0+):
+#
+# terraform {
+#   cloud {
+#     organization = "pertino"
+#
+#     workspaces {
+#       name = "pertino-dev"  # or pertino-prod
+#     }
+#   }
+# }
+#
+# Note: For Terraform < 1.6.0, use backend "remote" instead of cloud
+#
+# To use Terraform Cloud:
+# 1. Create an organization in Terraform Cloud
+# 2. Create workspaces (pertino-dev, pertino-prod)
+# 3. Configure backend in environments/*/backend.tf
+# 4. Run: terraform init
+

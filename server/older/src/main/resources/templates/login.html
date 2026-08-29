@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{../css/admin.css}" />
+<head th:replace="~{_layout :: head('관리자 로그인')}"></head>
+<body class="login-body">
+<header th:replace="~{_layout :: topbar}"></header>
+
+
+<main class="container center">
+    <section class="card login-card">
+        <h1 class="card-title">관리자 로그인</h1>
+        <form class="form" id="loginForm">
+            <div class="form-row">
+                <label>아이디</label>
+                <input type="text" name="username" placeholder="ID" required />
+            </div>
+            <div class="form-row">
+                <label>비밀번호</label>
+                <input type="password" name="password" placeholder="PW" required />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary w-100">접속</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+
+<footer th:replace="~{_layout :: footer}"></footer>
+</body>
+</html>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); // 폼 기본 제출 막기
+
+    const form = e.target;
+    const data = {
+        username: form.username.value,
+        password: form.password.value
+    };
+
+    try {
+        const response = await fetch('/admin/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            credentials: 'same-origin' // ⭐ 쿠키 전송/수신 허용
+        });
+
+        if (response.ok) {
+            const html = await response.text();
+            document.open();
+            document.write(html);
+            document.close();
+        } else {
+            alert('로그인 실패');
+        }
+    } catch (err) {
+        console.error(err);
+        alert('서버 요청 중 오류 발생');
+    }
+});
+</script>

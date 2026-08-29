@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${title}">관리자</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+</head>
+<body>
+
+<!-- 상단바 -->
+<header class="topbar" th:fragment="topbar">
+    <div class="brand">
+        <span class="logo">P</span>
+        <span class="brand-text">Khu X Pertineo 임시 관리자 콘솔</span>
+    </div>
+
+</header>
+
+
+<footer class="footer" th:fragment="footer">
+    </span> 경희대학교 Pertineo 관리자 콘솔 </span>
+</footer>
+</body>
+</html>

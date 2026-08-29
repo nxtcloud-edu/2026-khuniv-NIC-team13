@@ -1,0 +1,38 @@
+# Local Terraform data
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+crash.*.log
+*.crash.log
+
+# Secrets & credentials
+.env
+.env.*
+*.env
+*.pem
+secrets/
+
+# Variable files with potentially sensitive data
+terraform.auto.tfvars
+terraform.auto.tfvars.json
+*.tfvars
+!*.tfvars.example
+
+# Override files (local overrides)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Plan output
+*tfplan*
+
+# CLI config
+.terraformrc
+terraform.rc
+
+# Logs
+*.log

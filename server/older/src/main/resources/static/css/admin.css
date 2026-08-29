@@ -1,0 +1,161 @@
+:root{
+  /* Dark palette */
+  --bg:#0c1117;           /* 전체 배경 */
+  --card:#131a23;         /* 카드/테이블 배경 */
+  --ink:#e8edf2;          /* 기본 텍스트 */
+  --muted:#9aa4b2;        /* 보조 텍스트 */
+  --line:#2a3340;         /* 경계선 */
+  --radius:14px;
+  --space:14px;
+  /* Accent: red */
+  --accent:#e04f4f;       /* 상단 헤더/주요 버튼 */
+  --accent-dark:#c73b3b;  /* hover */
+}
+*{box-sizing:border-box}
+::placeholder{color:#7f8a99}
+
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,"Noto Sans KR",sans-serif;color:var(--ink);background:var(--bg)}
+
+/* ── Topbar (붉은 헤더) ───────────────────────────────── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(90deg,var(--accent),#b91c1c);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.topbar .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.topbar .logo{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.18);color:#fff;font-weight:800}
+.topbar .brand-text{letter-spacing:.3px; color:#fff;}
+.topbar .nav-actions{display:flex;gap:16px}
+.topbar .nav-link{color:#fff;text-decoration:none;font-weight:600;opacity:.9}
+.topbar .nav-link:hover{opacity:1;text-decoration:underline}
+
+/* ── Containers ──────────────────────────────────────── */
+.container{max-width:980px;margin:34px auto;padding:0 16px}
+.container.narrow{max-width:760px}
+.container.center{display:grid;place-items:center;min-height:60vh}
+
+/* ── Card ────────────────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 24px rgba(0,0,0,.35);padding:28px}
+.login-card{width:min(420px,90vw)}
+.card-title{margin:0 0 18px 0}
+
+/* ── Form ────────────────────────────────────────────── */
+.form{display:grid;gap:14px}
+.form-row{display:grid;gap:8px}
+.form-row.inline{display:flex;align-items:center;gap:10px}
+.form-row label{font-size:.95rem;color:var(--muted)}
+.form-row input[type=text],
+.form-row input[type=password],
+.form-row input[type=url],
+.form-row textarea{
+  width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#0f151d;color:#000000;outline:none
+}
+.form-row textarea{resize:vertical; color: #000000}
+.form-row input:focus, .form-row textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,0,0,.8)}
+.form-row .help{color:var(--muted);font-size:.85rem}
+
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.w-100{width:100%}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn{appearance:none;border:1px solid var(--line);background:#0f151d;color:var(--ink);padding:10px 14px;border-radius:10px;text-decoration:none;cursor:pointer;font-weight:600}
+.btn:hover{background:#121922}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+.btn-secondary{background:#1a222f;border-color:#2c3747;color:#e6eef7}
+
+/* ── Table ───────────────────────────────────────────── */
+.table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.30)}
+.table th,.table td{padding:12px 14px;border-bottom:1px solid var(--line)}
+.table thead th{background:#1a2230;color:#e2e8f0;letter-spacing:.3px;text-align:left}
+.table tr.clickable{cursor:pointer}
+.table tbody tr:hover{background:#151d29}
+.table .empty{text-align:center;color:var(--muted)}
+
+/* ── Toolbar & Chip ─────────────────────────────────── */
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.chip{display:inline-block;padding:4px 10px;border-radius:999px;background:#263041;color:#cbd5e1;font-weight:700;font-size:.82rem;border:1px solid var(--line)}
+
+/* ── Detail ─────────────────────────────────────────── */
+.detail-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px}
+.detail-title{margin:0}
+.detail-content{background:var(--card);border:1px solid var(--line);padding:18px;border-radius:12px;box-shadow:0 10px 24px rgba(0,0,0,.30);line-height:1.65}
+
+/* ── Footer ─────────────────────────────────────────── */
+.footer{margin:30px auto 24px;max-width:980px;color:var(--muted);text-align:center}
+
+/* ── Preview ────────────────────────────────────────── */
+.preview{margin:8px 0}
+.preview img{max-width:100%;border-radius:10px;border:1px solid var(--line);background:#0f151d}
+```
+css
+:root{
+  --teal:#24c6c8; --teal-dark:#1aa1a3; --ink:#222; --muted:#666; --bg:#f7f9fb; --card:#fff;
+  --radius:14px; --space:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,\"Noto Sans KR\",sans-serif;color:var(--ink);background:var(--bg)}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--teal);color:#fff}
+.topbar .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.topbar .logo{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#fff;color:var(--teal);font-weight:800}
+.topbar .brand-text{letter-spacing:.3px}
+.topbar .nav-actions{display:flex;gap:16px}
+.topbar .nav-link{color:#eaffff;text-decoration:none;font-weight:600;opacity:.9}
+.topbar .nav-link:hover{opacity:1;text-decoration:underline}
+
+.container{max-width:980px;margin:34px auto;padding:0 16px}
+.container.narrow{max-width:760px}
+.container.center{display:grid;place-items:center;min-height:60vh}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:0 6px 18px rgba(0,0,0,.06);padding:28px}
+.login-card{width:min(420px,90vw)}
+.card-title{margin:0 0 18px 0}
+
+.form{display:grid;gap:14px}
+.form-row{display:grid;gap:8px}
+.form-row.inline{display:flex;align-items:center;gap:10px}
+.form-row label{font-size:.95rem;color:var(--muted)}
+.form-row input[type=text],
+.form-row input[type=password],
+.form-row input[type=url],
+.form-row textarea{
+  width:100%;padding:12px 13px;border:1px solid #dfe5ea;border-radius:10px;background:#fff;outline:none
+}
+.form-row textarea{resize:vertical}
+.form-row input:focus, .form-row textarea:focus{border-color:var(--teal)}
+.form-row .help{color:var(--muted);font-size:.85rem}
+
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.w-100{width:100%}
+
+.btn{appearance:none;border:1px solid #dfe5ea;background:#fff;color:var(--ink);padding:10px 14px;border-radius:10px;text-decoration:none;cursor:pointer;font-weight:600}
+.btn:hover{background:#f3f6f9}
+.btn-primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn-primary:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
+.btn-secondary{background:#e6fbfb;border-color:#b6f0f0;color:#0a4}
+
+.table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+.table th,.table td{padding:12px 14px;border-bottom:1px solid #eef2f7}
+.table thead th{background:#f0fbfb;color:#067;letter-spacing:.3px;text-align:left}
+.table tr.clickable{cursor:pointer}
+.table tr:hover{background:#f8feff}
+.table .empty{text-align:center;color:var(--muted)}
+
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.chip{display:inline-block;padding:4px 10px;border-radius:999px;background:#e8f9f9;color:#0a6;font-weight:700;font-size:.82rem}
+
+.detail-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px}
+.detail-title{margin:0}
+.detail-content{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.05);line-height:1.65}
+
+.footer{margin:30px auto 24px;max-width:980px;color:var(--muted);text-align:center}
+
+.preview{margin:8px 0}
+.preview img{max-width:100%;border-radius:10px;border:1px solid #e1e8ef}
+
+.topbar{
+  background: linear-gradient(90deg, var(--accent), #b91c1c) !important;
+  color:#fff !important;
+}
+.topbar .nav-link{ color:#fff !important; }
+
+.logo{
+  color:#000000 !important;
+}

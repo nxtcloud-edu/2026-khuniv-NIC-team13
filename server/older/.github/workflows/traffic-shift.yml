@@ -1,0 +1,169 @@
+name: Shift Traffic to Production
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master-temp
+    paths:
+      - 'src/**'
+      - 'Dockerfile'
+      - 'build.gradle'
+      - 'gradle/**'
+
+permissions:
+  contents: read    # 코드 읽기
+  packages: write   # GitHub Container Registry 읽기/쓰기
+  actions: read
+
+# Prevent concurrent deployments
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ap-northeast-2
+  CODEDEPLOY_APPLICATION: pertino-prod-service-a
+  CODEDEPLOY_DEPLOYMENT_GROUP: pertino-prod-service-a-dg
+
+jobs:
+  traffic-shift:
+    name: Shift Traffic to Production
+    runs-on: ubuntu-22.04
+    
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Find Ready deployment
+        id: find-deployment
+        run: |
+          echo "Looking for Ready deployment in $CODEDEPLOY_DEPLOYMENT_GROUP..."
+          
+          # Get deployments in Ready state
+          DEPLOYMENTS=$(aws deploy list-deployments \
+            --application-name $CODEDEPLOY_APPLICATION \
+            --deployment-group-name $CODEDEPLOY_DEPLOYMENT_GROUP \
+            --include-only-statuses Ready \
+            --query 'deployments' \
+            --output json)
+          
+          echo "Deployments in Ready state: $DEPLOYMENTS"
+          
+          # Get the first (most recent) Ready deployment
+          DEPLOYMENT_ID=$(echo $DEPLOYMENTS | jq -r '.[0] // empty')
+          
+          if [ -z "$DEPLOYMENT_ID" ] || [ "$DEPLOYMENT_ID" == "null" ]; then
+            echo ""
+            echo "=============================================="
+            echo "  ERROR: No deployment in Ready state!"
+            echo "=============================================="
+            echo ""
+            echo "Please ensure you have deployed to Green first:"
+            echo "1. Push changes to 'release' branch"
+            echo "2. Wait for Green deployment to reach Ready state"
+            echo "3. Test Green environment at port 8443"
+            echo "4. Then merge to master-temp"
+            echo ""
+            exit 1
+          fi
+          
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+          echo ""
+          echo "Found Ready deployment: $DEPLOYMENT_ID"
+      
+      - name: Get deployment info
+        env:
+          DEPLOYMENT_ID: ${{ steps.find-deployment.outputs.deployment_id }}
+        run: |
+          echo "Getting deployment details..."
+          
+          aws deploy get-deployment \
+            --deployment-id $DEPLOYMENT_ID \
+            --query 'deploymentInfo.{status:status,description:description,createTime:createTime}' \
+            --output table
+      
+      - name: Shift traffic to Production
+        env:
+          DEPLOYMENT_ID: ${{ steps.find-deployment.outputs.deployment_id }}
+        run: |
+          echo ""
+          echo "=============================================="
+          echo "  SHIFTING TRAFFIC TO PRODUCTION"
+          echo "=============================================="
+          echo ""
+          echo "Deployment ID: $DEPLOYMENT_ID"
+          echo ""
+          
+          aws deploy continue-deployment \
+            --deployment-id $DEPLOYMENT_ID \
+            --deployment-wait-type READY_WAIT
+          
+          echo "Traffic shift initiated!"
+      
+      - name: Wait for traffic shift to complete
+        env:
+          DEPLOYMENT_ID: ${{ steps.find-deployment.outputs.deployment_id }}
+        run: |
+          echo "Waiting for traffic shift to complete..."
+          
+          MAX_ATTEMPTS=20
+          ATTEMPT=0
+          
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            STATUS=$(aws deploy get-deployment \
+              --deployment-id $DEPLOYMENT_ID \
+              --query 'deploymentInfo.status' \
+              --output text)
+            
+            echo "Deployment status: $STATUS (attempt $((ATTEMPT+1))/$MAX_ATTEMPTS)"
+            
+            case $STATUS in
+              "Succeeded")
+                echo ""
+                echo "=============================================="
+                echo "  PRODUCTION DEPLOYMENT COMPLETE!"
+                echo "=============================================="
+                echo ""
+                echo "Traffic has been shifted to the new version."
+                echo "The old (blue) tasks will be terminated after 5 minutes."
+                echo ""
+                exit 0
+                ;;
+              "Failed"|"Stopped")
+                echo ""
+                echo "Traffic shift failed with status: $STATUS"
+                aws deploy get-deployment \
+                  --deployment-id $DEPLOYMENT_ID \
+                  --query 'deploymentInfo.errorInformation' \
+                  --output json
+                exit 1
+                ;;
+              *)
+                echo "Traffic shift in progress..."
+                ;;
+            esac
+            
+            sleep 15
+            ATTEMPT=$((ATTEMPT + 1))
+          done
+          
+          echo "Traffic shift timed out"
+          exit 1
+      
+      - name: Deployment summary
+        if: always()
+        env:
+          DEPLOYMENT_ID: ${{ steps.find-deployment.outputs.deployment_id }}
+        run: |
+          echo ""
+          echo "=== Production Deployment Summary ==="
+          echo "Deployment ID: $DEPLOYMENT_ID"
+          echo "Commit: ${GITHUB_SHA}"
+          echo ""
+          echo "AWS Console:"
+          echo "https://${AWS_REGION}.console.aws.amazon.com/codesuite/codedeploy/deployments/${DEPLOYMENT_ID}"

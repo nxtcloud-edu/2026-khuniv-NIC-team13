@@ -1,0 +1,103 @@
+services:
+  # DynamoDB Local (로컬 테스트용)
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    cpus: 0.25
+    mem_limit: 512m
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb"
+    networks:
+      - pertineo-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    cpus: 0.25
+    mem_limit: 512m
+    env_file:
+      - .env.dev
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      ANALYSIS_SERVICE_BASE_URL: http://ai-service:8080
+      # JConsole 등 원격 JMX 연결용 (로컬에서 localhost:9010으로 접속)
+      JAVA_TOOL_OPTIONS: >-
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.port=9010
+        -Dcom.sun.management.jmxremote.rmi.port=9010
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.rmi.server.hostname=127.0.0.1
+    ports:
+      - '8080:8080'  # API는 외부에 열어야 하니까 이건 OK
+      - '9010:9010'  # JMX (JConsole 연결용)
+    depends_on:
+      - dynamodb-local
+      - ai-service
+    networks:
+      - pertineo-network
+
+  ai-service:
+    image: yoonhojoon/pertineo-ai:latest
+    cpus: 0.25
+    mem_limit: 1024m
+    env_file:
+      - .env.dev
+    ports:
+      - '3000:8080'
+    networks:
+      - pertineo-network
+
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    container_name: prometheus
+    cpus: 0.50
+    mem_limit: 512m
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+      - --web.enable-lifecycle
+    ports:
+      - '9090:9090'
+    depends_on:
+      - app
+    networks:
+      - pertineo-network
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    container_name: grafana
+    cpus: 0.25
+    mem_limit: 256m
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/dashboards/local-load-experiments.json
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/etc/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - '3001:3000'
+    depends_on:
+      - prometheus
+    networks:
+      - pertineo-network
+
+networks:
+  pertineo-network:
+    driver: bridge
+
+volumes:
+  prometheus-data:
+  grafana-data:
