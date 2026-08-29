@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('공지 수정')}"></head>
+<body>
+<header th:replace="~{_layout :: topbar}"></header>
+
+<main class="container narrow">
+    <h2>공지 수정</h2>
+    <form class="form" th:action="@{/admin/notices/edit/{id}(id=${notice.id})}" method="post">
+
+        <div class="form-row">
+            <label>제목</label>
+            <input type="text" name="title" th:value="${notice.title}" required />
+        </div>
+
+        <div class="form-row">
+            <label>내용</label>
+            <!-- textarea 유지 -->
+            <textarea id="editor" name="content" rows="14" th:text="${notice.content}" required></textarea>
+        </div>
+
+        <div class="form-actions">
+            <a class="btn btn-secondary" th:href="@{/admin/notices/detail/{id}(id=${notice.id})}">취소</a>
+            <button class="btn btn-primary" type="submit">저장</button>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+
+<!-- ✅ CKEditor CDN -->
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+<script>
+    // textarea -> CKEditor 변환
+    CKEDITOR.replace('editor', {
+        height: 400
+    });
+</script>
+
+</body>
+</html>

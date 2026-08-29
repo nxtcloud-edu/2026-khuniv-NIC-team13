@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{_layout :: head('잘못된 요청')}"></head>
+<body>
+<header th:replace="~{_layout :: topbar}"></header>
+
+<main class="container narrow">
+    <h2>로그인을 다시해야하거나 잘못된 요청입니다.</h2>
+    <a class="btn btn-primary" th:href="@{/admin}">돌아가기</a>
+</main>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('공지사항 관리')}"></head>
+<body>
+<header th:replace="~{_layout :: topbar}"></header>
+
+
+<main class="container">
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <h2>공지사항</h2>
+        </div>
+        <div class="toolbar-right">
+            <a class="btn btn-primary" th:href="@{/admin/popup/form}">팝업 작성</a>
+            <a class="btn btn-primary" th:href="@{/admin/notices/form}">공지사항 작성</a>
+            <a class="btn btn-primary" th:href="@{/admin/logs/{date}(date=${#temporals.format(today, 'yyyy-MM-dd')})}">
+                대시보드로 이동
+            </a>
+
+
+        </div>
+    </div>
+
+
+    <!-- 목록 테이블: 행 클릭 시 상세로 이동 -->
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th style="width: 10%">번호</th>
+            <th style="width: 60%">제목</th>
+            <th style="width: 15%">작성일</th>
+            <th style="width: 15%">최근수정일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="n : ${notices}" th:onclick="|location.href='@{/admin/notices/detail/{id}(id=${n.id})}'|" class="clickable">
+            <td th:text="${n.id}">id</td>
+            <td th:text="${n.title}">제목</td>
+            <td th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd')} ">2025-09-05</td>
+            <td th:text="${#temporals.format(n.modifiedAt, 'yyyy-MM-dd')} ">2025-09-05</td>
+
+        </tr>
+        <tr th:if="${#lists.isEmpty(notices)}"><td colspan="3" class="empty">등록된 공지가 없습니다.</td></tr>
+        </tbody>
+    </table>
+</main>
+
+
+<footer th:replace="~{_layout :: footer}"></footer>
+</body>
+</html>

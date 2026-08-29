@@ -1,0 +1,19 @@
+prometheus.scrape "service_a" {
+  targets = [{
+    __address__ = "app:8080",
+  }]
+  forward_to      = [prometheus.remote_write.grafana_cloud.receiver]
+  metrics_path    = "/actuator/prometheus"
+  scrape_interval = "5s"
+}
+
+prometheus.remote_write "grafana_cloud" {
+  endpoint {
+    url = env("GRAFANA_CLOUD_PROMETHEUS_ENDPOINT")
+
+    basic_auth {
+      username = env("GRAFANA_CLOUD_PROMETHEUS_USERNAME")
+      password = env("GRAFANA_CLOUD_API_KEY")
+    }
+  }
+}

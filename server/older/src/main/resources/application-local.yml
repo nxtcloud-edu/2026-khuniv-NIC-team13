@@ -1,0 +1,30 @@
+# 로컬 개발 환경 설정
+# 이 파일은 spring.profiles.active=local일 때 자동으로 로드됩니다
+
+# CloudWatch 메트릭 비활성화 (로컬에서는 전송 불필요)
+management:
+  cloudwatch:
+    metrics:
+      export:
+        enabled: false
+
+analysis:
+  service:
+    base-url: ${ANALYSIS_SERVICE_BASE_URL:http://ai-service:8080}
+
+# DynamoDB 설정 (로컬 DynamoDB Local 사용)
+dynamodb:
+  region: ap-northeast-2
+  endpoint: ${DYNAMODB_ENDPOINT:http://dynamodb-local:8000}
+  tables:
+    notices: pertineo-notices-local
+    emails: pertineo-emails-local
+    admins: pertineo-admins-local
+    whitelist: pertineo-whitelist-local
+    properties: pertineo-properties-local
+    locks: pertineo-locks-local
+    access-codes: pertineo-access-codes-local
+    popups: pertineo-popups-local
+    sessions: pertineo-sessions-local
+    member-documents: pertineo-member-documents-local
+

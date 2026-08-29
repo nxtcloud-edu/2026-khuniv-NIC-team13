@@ -1,0 +1,41 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('공지 상세')}"></head>
+<body>
+<header th:replace="~{_layout :: topbar}"></header>
+
+
+<main class="container narrow">
+    <div class="detail-header">
+        <h2 class="detail-title" th:text="${notice.title}">제목</h2>
+        <div class="meta">
+            <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">2025-09-05 10:00</span>
+
+        </div>
+    </div>
+
+
+    <article class="detail-content" th:utext="${notice.content}">
+        공지 내용 HTML 렌더링 영역
+    </article>
+
+
+    <div class="form-actions">
+        <form th:action="@{/admin}" style="display:inline;">
+            <button class="btn btn-primary">목록</button>
+        </form>
+        <form th:action="@{/admin/notices/edit/{id}(id=${notice.id})}" style="display:inline;">
+            <button class="btn btn-primary">수정</button>
+        </form>
+        <form th:action="@{/admin/notices/delete/{id}(id=${notice.id})}" method="post" style="display:inline;">
+            <button class="btn btn-primary">삭제</button>
+        </form>
+    </div>
+</main>
+
+
+<footer th:replace="~{_layout :: footer}"></footer>
+</body>
+
+
+</html>
+

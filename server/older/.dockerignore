@@ -1,0 +1,30 @@
+# 빌드 결과물
+build/
+bin/
+.gradle/
+out/
+
+# IDE 설정
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Git
+.git/
+.gitignore
+
+# 기타
+*.log
+.DS_Store
+Thumbs.db
+
+# Docker 관련
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 배포 스크립트
+deploy.sh
+

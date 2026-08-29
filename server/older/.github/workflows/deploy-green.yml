@@ -1,0 +1,259 @@
+name: Deploy to Green (Staging)
+
+on:
+  push:
+    branches:
+      - release
+    paths:
+      - 'src/**'
+      - 'Dockerfile'
+      - 'build.gradle'
+      - 'gradle/**'
+      - '.github/workflows/deploy-green.yml'
+
+permissions:
+  contents: read    # 코드 읽기
+  packages: write   # GitHub Container Registry 읽기/쓰기
+  actions: read
+
+# Prevent concurrent deployments
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: pertino-service-a
+  ECS_CLUSTER: pertino-cluster
+  ECS_SERVICE: pertino-prod-service-a
+  TASK_DEFINITION_FAMILY: pertino-prod-service-a
+  CODEDEPLOY_APPLICATION: pertino-prod-service-a
+  CODEDEPLOY_DEPLOYMENT_GROUP: pertino-prod-service-a-dg
+  CONTAINER_NAME: service-a
+  CONTAINER_PORT: 8080
+
+jobs:
+  deploy-green:
+    name: Build and Deploy to Green
+    runs-on: ubuntu-22.04
+    outputs:
+      deployment_id: ${{ steps.deploy.outputs.deployment_id }}
+      image_tag: ${{ steps.version.outputs.tag }}
+    
+    steps:
+      - name: Get version tag
+        id: version
+        run: |
+          # Use commit SHA as image tag
+          TAG="${GITHUB_SHA::8}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Image tag: $TAG"
+      
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      
+      - name: Build Docker image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:green
+      
+      - name: Push Docker image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:green
+      
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      
+      - name: Tag and Push Docker image to Docker Hub
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ steps.version.outputs.tag }}
+          DOCKERHUB_REPOSITORY: yoonhojoon/pertineo
+        run: |
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $DOCKERHUB_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $DOCKERHUB_REPOSITORY:green
+          docker push $DOCKERHUB_REPOSITORY:$IMAGE_TAG
+          docker push $DOCKERHUB_REPOSITORY:green
+      
+      - name: Get current task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition $TASK_DEFINITION_FAMILY \
+            --query 'taskDefinition' \
+            --output json > task-definition.json
+          
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' \
+            task-definition.json > clean-task-definition.json
+      
+      - name: Update task definition with new image
+        id: update-task-def
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          NEW_IMAGE="${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}"
+          
+          jq --arg IMAGE "$NEW_IMAGE" \
+            '.containerDefinitions[0].image = $IMAGE' \
+            clean-task-definition.json > new-task-definition.json
+          
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-task-definition.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+          
+          echo "task_definition_arn=$NEW_TASK_DEF_ARN" >> $GITHUB_OUTPUT
+          echo "New task definition: $NEW_TASK_DEF_ARN"
+      
+      - name: Create AppSpec file
+        env:
+          TASK_DEFINITION_ARN: ${{ steps.update-task-def.outputs.task_definition_arn }}
+        run: |
+          cat > appspec.json << EOF
+          {
+            "version": 0.0,
+            "Resources": [
+              {
+                "TargetService": {
+                  "Type": "AWS::ECS::Service",
+                  "Properties": {
+                    "TaskDefinition": "${TASK_DEFINITION_ARN}",
+                    "LoadBalancerInfo": {
+                      "ContainerName": "${CONTAINER_NAME}",
+                      "ContainerPort": ${CONTAINER_PORT}
+                    }
+                  }
+                }
+              }
+            ]
+          }
+          EOF
+          
+          echo "AppSpec content:"
+          cat appspec.json
+      
+      - name: Create CodeDeploy deployment
+        id: deploy
+        run: |
+          # Properly escape AppSpec JSON for --revision parameter
+          APPSPEC_CONTENT=$(cat appspec.json | jq -c .)
+          REVISION_JSON=$(jq -n --arg content "$APPSPEC_CONTENT" \
+            '{revisionType: "AppSpecContent", appSpecContent: {content: $content}}')
+          
+          echo "Revision JSON:"
+          echo "$REVISION_JSON"
+          
+          DEPLOYMENT_ID=$(aws deploy create-deployment \
+            --application-name $CODEDEPLOY_APPLICATION \
+            --deployment-group-name $CODEDEPLOY_DEPLOYMENT_GROUP \
+            --revision "$REVISION_JSON" \
+            --deployment-config-name CodeDeployDefault.ECSAllAtOnce \
+            --description "Green deployment - commit ${GITHUB_SHA::8}" \
+            --query 'deploymentId' \
+            --output text)
+          
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+          echo "Created deployment: $DEPLOYMENT_ID"
+      
+      # Wait for Green deployment to be Ready (NOT traffic shift)
+      - name: Wait for Green to be Ready
+        env:
+          DEPLOYMENT_ID: ${{ steps.deploy.outputs.deployment_id }}
+        run: |
+          echo "Waiting for Green deployment $DEPLOYMENT_ID to reach Ready state..."
+          echo ""
+          
+          MAX_ATTEMPTS=40
+          ATTEMPT=0
+          
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            STATUS=$(aws deploy get-deployment \
+              --deployment-id $DEPLOYMENT_ID \
+              --query 'deploymentInfo.status' \
+              --output text)
+            
+            echo "Deployment status: $STATUS (attempt $((ATTEMPT+1))/$MAX_ATTEMPTS)"
+            
+            case $STATUS in
+              "Ready")
+                echo ""
+                echo "=============================================="
+                echo "  GREEN DEPLOYMENT READY!"
+                echo "=============================================="
+                echo ""
+                echo "Green environment is now available for testing."
+                echo ""
+                echo "Test endpoint (port 8443):"
+                echo "  https://<your-domain>:8443/actuator/health"
+                echo ""
+                echo "After testing, merge to master-temp to shift traffic."
+                echo ""
+                exit 0
+                ;;
+              "Succeeded")
+                echo "Warning: Deployment already succeeded (traffic was shifted)."
+                echo "This may happen if there was no previous blue deployment."
+                exit 0
+                ;;
+              "Failed"|"Stopped")
+                echo "Deployment failed with status: $STATUS"
+                aws deploy get-deployment \
+                  --deployment-id $DEPLOYMENT_ID \
+                  --query 'deploymentInfo.errorInformation' \
+                  --output json
+                exit 1
+                ;;
+              *)
+                echo "Deployment in progress..."
+                ;;
+            esac
+            
+            sleep 30
+            ATTEMPT=$((ATTEMPT + 1))
+          done
+          
+          echo "Deployment timed out waiting for Ready state"
+          exit 1
+      
+      - name: Green deployment summary
+        if: always()
+        env:
+          DEPLOYMENT_ID: ${{ steps.deploy.outputs.deployment_id }}
+        run: |
+          echo ""
+          echo "=== Green Deployment Summary ==="
+          echo "Deployment ID: $DEPLOYMENT_ID"
+          echo "Image Tag: ${{ steps.version.outputs.tag }}"
+          echo "Commit: ${GITHUB_SHA}"
+          echo ""
+          echo "AWS Console:"
+          echo "https://${AWS_REGION}.console.aws.amazon.com/codesuite/codedeploy/deployments/${DEPLOYMENT_ID}"
+          echo ""
+          echo "Next steps:"
+          echo "1. Test Green environment at port 8443"
+          echo "2. If tests pass, merge release branch to master-temp"
+          echo "3. Traffic will automatically shift to Green (now Blue)"

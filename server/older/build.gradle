@@ -1,0 +1,98 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Data Commons for Page, Pageable interfaces
+	implementation 'org.springframework.data:spring-data-commons'
+	// Spring Transaction for @Transactional
+	implementation 'org.springframework:spring-tx'
+	// OpenAPI / Swagger UI
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+	
+	// Prometheus metrics export (scraped by Grafana Alloy → Grafana Cloud)
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
+	// JPA and MySQL removed - using DynamoDB instead
+	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	compileOnly 'org.projectlombok:lombok'
+	//runtimeOnly 'com.mysql:mysql-connector-j'
+	//runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	//gpt
+	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.5'
+	//OAuth
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	//jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+	//stream
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	//redis - removed for migration to local cache
+	//implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	
+	//caffeine cache
+	implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
+	//escape
+	implementation 'org.apache.commons:commons-text:1.10.0'
+	//email
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	//markdown
+	implementation 'com.vladsch.flexmark:flexmark-all:0.64.0'
+
+	//thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	//aws - BOM으로 버전 통일
+	implementation platform('software.amazon.awssdk:bom:2.29.46')
+	implementation 'software.amazon.awssdk:dynamodb'
+	implementation 'software.amazon.awssdk:auth'
+	
+	//dynamodb local for testing
+	testImplementation 'com.amazonaws:DynamoDBLocal:2.0.0'
+	testImplementation 'com.almworks.sqlite4java:sqlite4java:1.0.392'
+	
+	//property-based testing
+	testImplementation 'net.java.quickcheck:quickcheck:0.6'
+
+
+
+
+}
+
+tasks.withType(Test) {
+	scanForTestClasses = false
+	include "**/*Test.class"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

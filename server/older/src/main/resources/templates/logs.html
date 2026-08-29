@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('대시보드, 로그')}">
+
+</head>
+<body>
+<header th:replace="~{_layout :: topbar}"></header>
+
+<main class="container">
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <h2 th:text="'오늘의 현황 (' + ${date} + ')'"></h2>
+        </div>
+        <div class="toolbar-right">
+            <a class="btn btn-primary" th:href="@{/admin}">공지사항 관리</a>
+        </div>
+    </div>
+    <div class="dashboard" style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:30px;">
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">커리어 컨설팅 요청량</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${(codeCounts['AnalyzeAgentError'] ?: 0)+ (codeCounts['AnalyzeComplete'] ?: 0) + (codeCounts['AnalyzeStreamError'] ?: 0)}">0</div>
+        </div>
+
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">이메일 총 사용량</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${(codeCounts['AnalyzeEmailSendSuccess'] ?: 0) +  (codeCounts['CodeSendSuccess'] ?: 0)}">0</div>
+        </div>
+    </div>
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <h2 th:text="'커리어 컨설팅 (' + ${date} + ')'"></h2>
+        </div>
+    </div>
+    <div class="dashboard" style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:30px;">
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">정상 커리어 컨설팅</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${codeCounts['AnalyzeComplete'] ?: 0}">0</div>
+        </div>
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">AI가 반려한 커리어</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${codeCounts['AnalyzeAgentError'] ?: 0}">0</div>
+        </div>
+
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">커리어 컨설팅 에러</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${codeCounts['AnalyzeStreamError'] ?: 0}">0</div>
+        </div>
+    </div>
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <h2 th:text="'인증 현황 (' + ${date} + ')'"></h2>
+        </div>
+    </div>
+    <div class="dashboard" style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:30px;">
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">성공한 이메일 인증</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${codeCounts['CodeVerifySuccess'] ?: 0}">0</div>
+        </div>
+
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">인증 코드 전송</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${codeCounts['CodeSendSuccess'] ?: 0}">0</div>
+        </div>
+    </div>
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <h2 th:text="'보고서 (' + ${date} + ')'"></h2>
+        </div>
+    </div>
+    <div class="dashboard" style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:30px;">
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">보고서 생성량</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${codeCounts['AnalyzeEmailSendSuccess'] ?: 0}">0</div>
+        </div>
+
+        <div class="dashboard-card" style="flex:1 1 180px; background:#131a23; color:#fff; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.4); text-align:center;">
+            <div style="font-size:1rem; opacity:0.7;">보고서 생성 실패량</div>
+            <div style="font-size:2rem; font-weight:700;" th:text="${codeCounts['AnalyzeEmailSendFailed'] ?: 0}">0</div>
+        </div>
+    </div>
+
+
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <h2 th:text="'상세 로그 (' + ${date} + ')'"></h2>
+        </div>
+
+    </div>
+
+    <div th:if="${error}">
+        <p style="color:red;" th:text="${error}"></p>
+    </div>
+
+    <div class="logs-table-wrapper" style="overflow-x:auto; margin-top:20px; padding:0 20px;">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th style="width: 15%">시간</th>
+                <th style="width: 12%">종류</th>
+                <th style="width: 12%">이메일</th>
+                <th style="width: 12%">Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="log, stat : ${logs}">
+                <td th:text="${#temporals.format(log.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${log.code}"></td>
+                <td th:text="${log.email}"></td>
+                <td><pre style="margin:0; white-space:pre-wrap; word-break:break-word;" th:text="${log.msg}"></pre></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(logs)}">
+                <td colspan="9" class="empty">등록된 로그가 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+</body>
+</html>

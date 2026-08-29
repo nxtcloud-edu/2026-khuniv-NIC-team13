@@ -1,0 +1,99 @@
+# 공통 설정 (모든 프로필에서 공유)
+spring:
+  application:
+    name: demo
+  profiles:
+    # 기본 프로필: 로컬 개발 환경
+    # 프로덕션에서는 환경 변수나 실행 옵션으로 오버라이드
+    # 예: --spring.profiles.active=prod 또는 SPRING_PROFILES_ACTIVE=prod
+    active: ${SPRING_PROFILES_ACTIVE:local}
+    include: oauth
+  
+  # OAuth2 설정
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: google
+            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID}
+            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            scope: profile,email
+  
+  # JWT 설정
+  jwt:
+    secret: ${SPRING_JWT_SECRET}
+  
+  # 이메일 설정
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+
+# ChatGPT API 설정
+chatgpt:
+  api-key: ${CHATGPT_API_KEY}
+
+# 분석 서비스 설정
+analysis:
+  service:
+    base-url: ${ANALYSIS_SERVICE_BASE_URL}
+
+# Actuator & Metrics 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,pertineoMetrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+
+  # Prometheus metrics export (scraped by Grafana Alloy → Grafana Cloud)
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+        step: 5s
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+    enable:
+      jvm: true
+      system: true
+      process: true
+      logback: true
+      tomcat: true
+      reactor.netty.http.server.connections: true
+      reactor.netty.http.client.connections: true
+      spring.security: false
+
+pertineo:
+  session:
+    ttl-minutes: ${PERTINEO_SESSION_TTL_MINUTES:30}
+    extend-fixed-minutes: ${PERTINEO_SESSION_EXTEND_FIXED_MINUTES:30}
+    cookie-name: ${PERTINEO_SESSION_COOKIE_NAME:PERTINEO_SESSION}
+    cookie-path: ${PERTINEO_SESSION_COOKIE_PATH:/}
+    same-site: ${PERTINEO_SESSION_SAMESITE:None}
+    secure: ${PERTINEO_SESSION_SECURE:true}
+  legal:
+    terms-version: ${PERTINEO_LEGAL_TERMS_VERSION:2026-03-01}
+    privacy-collection-version: ${PERTINEO_LEGAL_PRIVACY_COLLECTION_VERSION:2026-03-01}
+    privacy-policy-version: ${PERTINEO_LEGAL_PRIVACY_POLICY_VERSION:2026-03-01}
+    third-party-version: ${PERTINEO_LEGAL_THIRD_PARTY_VERSION:2026-03-01}
+      

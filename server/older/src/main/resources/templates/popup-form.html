@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('팝업 작성')}"></head>
+<body>
+<header th:replace="~{_layout :: topbar}"></header>
+
+
+<main class="container narrow">
+    <h2>팝업 작성</h2>
+    <form class="form" th:action="@{/admin/popup/form}" method="post" enctype="multipart/form-data">
+        <div class="form-row">
+            <label>팝업 제목</label>
+            <input type="text" name="title" placeholder="삼성전자 워크숍 안내" required />
+        </div>
+
+
+        <div class="form-row">
+            <label>이미지 업로드</label>
+            <input id="file" type="file" name="image" accept="image/*" required />
+            <small class="help">권장: 800×600 이하, JPG/PNG</small>
+        </div>
+
+
+        <div class="preview" id="preview" hidden>
+            <img id="previewImg" alt="미리보기" />
+        </div>
+
+
+        <div class="form-row">
+            <label>링크(팝업 클릭시 이동할 곳, 없을 시에 공란)</label>
+            <input type="url" name="link" placeholder="https://example.com" />
+        </div>
+
+
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-primary"
+                    th:onclick="|window.location='@{/admin}'|">
+                취소
+            </button>
+            <button class="btn btn-primary" type="submit">저장</button>
+        </div>
+    </form>
+    <section>
+        <h3>현재 게시 중인 팝업</h3>
+        <div th:if="${popup != null}" class="popup-preview">
+            <div class="popup-window">
+                <!-- 제목 영역 -->
+                <div class="popup-header">
+                    <h4 th:text="${popup.title}"></h4>
+                </div>
+
+                <!-- 이미지 -->
+                <a th:if="${popup.link}" th:href="${popup.link}" target="_blank">
+                    <img th:src="@{/admin/popup/image}" alt="현재 팝업" class="popup-image"/>
+                </a>
+                <img th:if="${popup.link == null}" th:src="@{/admin/popup/image}" alt="현재 팝업" class="popup-image"/>
+
+                <!-- 링크 표시 -->
+                <div class="popup-content" th:if="${popup.link}">
+                    <p class="popup-link">
+                        <a th:href="${popup.link}" target="_blank" th:text="${popup.link}"></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <p th:if="${popup == null}">현재 게시 중인 팝업이 없습니다.</p>
+    </section>
+</main>
+<style>
+    .popup-preview {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    /* 팝업 윈도우 스타일 */
+    .popup-window {
+        width: 420px;
+        background: #fff;
+        border: 2px solid #444;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        overflow: hidden;
+        animation: popupFade 0.3s ease-in-out;
+    }
+
+    /* 제목 영역 */
+    .popup-header {
+        background: #f5f5f5;
+        padding: 12px 16px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+    .popup-header h4 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #222;
+    }
+
+    /* 이미지 */
+    .popup-image {
+        width: 100%;
+        display: block;
+    }
+
+    /* 링크 표시 */
+    .popup-content {
+        padding: 10px 16px;
+        text-align: center;
+    }
+    .popup-link a {
+        color: #0066cc;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+    .popup-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* 등장 애니메이션 */
+    @keyframes popupFade {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+</style>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+
+
+<script>
+    const file = document.getElementById('file');
+    const preview = document.getElementById('preview');
+    const img = document.getElementById('previewImg');
+    file?.addEventListener('change', (e) => {
+    const f = e.target.files?.[0];
+    if (!f) { preview.hidden = true; return; }
+    img.src = URL.createObjectURL(f);
+    preview.hidden = false;
+    });
+</script>
+</body>
+</html>
