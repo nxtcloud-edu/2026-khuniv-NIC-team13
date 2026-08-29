@@ -4,44 +4,7 @@
 
 이 저장소는 프런트엔드, 코어 API, AI API를 분리한 3계층 모노레포입니다.
 
-```mermaid
-flowchart LR
-    User["사용자 브라우저"]
-
-    subgraph Client["client · React SPA"]
-        UI["입력·분석·리포트 UI"]
-        State["React Query + Zustand"]
-        SSE["SSE 이벤트 소비"]
-    end
-
-    subgraph Core["server · Core FastAPI"]
-        Auth["이메일 인증·세션·크레딧"]
-        Domain["공지·설정·관리자 API"]
-        Repo["Repository Interface"]
-    end
-
-    subgraph AI["ai-server/python · AI FastAPI"]
-        Parse["스마트/파일 파싱"]
-        Workflow["StateGraph 분석 워크플로"]
-        Career["공고 추천·기업 추천·로드맵"]
-    end
-
-    User --> UI
-    UI <--> State
-    UI -->|"REST / SSE"| Core
-    Core -.->|"분석 프록시 연결 예정"| AI
-    AI -->|"SSE 분석 이벤트"| SSE
-
-    Repo --> Memory[("In-memory")]
-    Repo --> CoreDDB[("AWS DynamoDB<br/>인증·세션·공지")]
-
-    AI --> OpenAI["OpenAI Responses API"]
-    AI --> Tavily["Tavily Search"]
-    AI --> AiDDB[("AWS DynamoDB<br/>합격자 점수·문서")]
-    AI --> S3V[("AWS S3 Vectors")]
-    AI -.->|"선택적 트레이싱"| LangSmith["LangSmith"]
-    Auth --> Mail["AWS SES / SMTP"]
-```
+![사진](./KakaoTalk_Photo_2026-08-29-12-08-57.png)
 
 > **현재 통합 상태**
 > `client`는 코어 API의 `POST /api/analysis`를 호출하지만, 현재 `server`의 해당 라우트는 실제 AI 서버를 호출하지 않고 `analysis-engine-unavailable` SSE 이벤트를 반환합니다. 실제 분석 엔진은 `ai-server/python`의 `POST /api/agent/analyze/stream`에 구현되어 있습니다. 따라서 전체 사용자 흐름을 완성하려면 코어 API에서 AI API로 요청과 SSE를 중계하는 프록시 계층이 필요합니다.
@@ -56,7 +19,7 @@ flowchart LR
 
 이 구조에서 `server`는 사용자·권한·서비스 정책을 담당하는 **진입점/BFF**이고, `ai-server`는 외부 AI 및 검색 서비스와 데이터 소스를 조합하는 **연산 전용 서비스**입니다. 브라우저가 AI API 키나 AWS 자격 증명을 직접 다루지 않도록 모든 외부 연동은 서버 측에서 수행합니다.
 
-![자기소개서 분석 파이프라인](./KakaoTalk_Photo_2026-08-29-11-15-31.png)
+## 자기소개서 분석 파이프라인
 
 AI 분석은 `StateGraphEngine`이 상태 객체를 다음 노드로 전달하는 방식으로 실행됩니다.
 
